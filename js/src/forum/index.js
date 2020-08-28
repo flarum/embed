@@ -22,22 +22,13 @@ extend(ForumApplication.prototype, 'mount', function() {
 
 m.route.prefix = '';
 
-// override(m.route, 'set', function(original, root, arg1, arg2, vdom) {
-//   if (arguments.length === 1) {
-
-//   } else if (arguments.length === 4 && typeof arg1 === 'string') {
-
-//   } else if (root.addEventListener || root.attachEvent) {
-//     root.href = vdom.attrs.href.replace('/embed', '/d');
-//     root.target = '_blank';
-
-//     // TODO: If href leads to a post within this discussion that we have
-//     // already loaded, then scroll to it?
-//     return;
-//   }
-
-//   return original.apply(this, Array.prototype.slice.call(arguments, 1));
-// });
+override(m.route.Link, 'view', function (original, vnode) {
+  vnode.attrs.href = vnode.attrs.href.replace('/embed', '/d');
+  vnode.attrs.target = '_blank';
+  // TODO: If href leads to a post within this discussion that we have
+  // already loaded, then scroll to it?
+  return original(vnode);
+});
 
 // Trim the /embed prefix off of post permalinks
 override(PostMeta.prototype, 'getPermalink', (original, post) => {
