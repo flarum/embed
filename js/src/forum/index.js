@@ -20,8 +20,6 @@ extend(ForumApplication.prototype, 'mount', function() {
   }
 });
 
-m.route.prefix = '';
-
 override(m.route.Link, 'view', function (original, vnode) {
   vnode.attrs.href = vnode.attrs.href.replace('/embed', '/d');
   vnode.attrs.target = '_blank';
