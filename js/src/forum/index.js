@@ -1,15 +1,15 @@
 import 'iframe-resizer/js/iframeResizer.contentWindow.js';
 
-import { override, extend } from 'flarum/extend';
-import app from 'flarum/app';
-import Stream from 'flarum/utils/Stream';
-import ForumApplication from 'flarum/ForumApplication';
-import Composer from 'flarum/components/Composer';
-import PostStream from 'flarum/components/PostStream';
-import ModalManager from 'flarum/components/ModalManager';
-import PostMeta from 'flarum/components/PostMeta';
+import { override, extend } from 'flarum/common/extend';
+import app from 'flarum/forum/app';
+import Stream from 'flarum/common/utils/Stream';
+import ForumApplication from 'flarum/forum/ForumApplication';
+import Composer from 'flarum/forum/components/Composer';
+import PostStream from 'flarum/forum/components/PostStream';
+import ModalManager from 'flarum/common/components/ModalManager';
+import PostMeta from 'flarum/forum/components/PostMeta';
 
-import DiscussionPage from 'flarum/components/DiscussionPage';
+import DiscussionPage from 'flarum/forum/components/DiscussionPage';
 
 extend(ForumApplication.prototype, 'mount', function() {
   if (m.route.param('hideFirstPost')) {
