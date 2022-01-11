@@ -11,9 +11,9 @@ import PostMeta from 'flarum/forum/components/PostMeta';
 
 import DiscussionPage from 'flarum/forum/components/DiscussionPage';
 
-extend(ForumApplication.prototype, 'mount', function() {
+extend(ForumApplication.prototype, 'mount', function () {
   if (m.route.param('hideFirstPost')) {
-    extend(PostStream.prototype, 'view', vdom => {
+    extend(PostStream.prototype, 'view', (vdom) => {
       if (vdom.children[0].attrs['data-number'] === 1) {
         vdom.children.splice(0, 1);
       }
@@ -36,7 +36,7 @@ override(PostMeta.prototype, 'getPermalink', (original, post) => {
 
 app.pageInfo = Stream({});
 
-const reposition = function() {
+const reposition = function () {
   const info = app.pageInfo();
   this.$().css('top', Math.max(0, info.scrollTop - info.offsetTop));
 };
@@ -45,33 +45,36 @@ extend(ModalManager.prototype, 'show', reposition);
 extend(Composer.prototype, 'show', reposition);
 
 window.iFrameResizer = {
-  readyCallback: function() {
+  readyCallback: function () {
     window.parentIFrame.getPageInfo(app.pageInfo);
-  }
+  },
 };
 
-extend(PostStream.prototype, 'goToNumber', function(promise, number) {
+extend(PostStream.prototype, 'goToNumber', function (promise, number) {
   if (number === 'reply' && 'parentIFrame' in window && app.composer.isFullScreen()) {
     const itemTop = this.$('.PostStream-item:last').offset().top;
     window.parentIFrame.scrollToOffset(0, itemTop);
   }
 });
 
-extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
+extend(DiscussionPage.prototype, 'sidebarItems', function (items) {
   items.remove('scrubber');
 
   const count = this.discussion.replyCount();
 
-  items.add('replies', <h3>
-    <a route={app.route.discussion(this.discussion).replace('/embed', '/d')}>
-      {count} comment{count == 1 ? '' : 's'}
-    </a>
-  </h3>, 100);
+  items.add(
+    'replies',
+    <h3>
+      <a route={app.route.discussion(this.discussion).replace('/embed', '/d')}>
+        {count} comment{count == 1 ? '' : 's'}
+      </a>
+    </h3>,
+    100
+  );
 
   const attrs = items.get('controls').attrs;
   attrs.className = attrs.className.replace('App-primaryControl', '');
 });
 
-app.routes['discussion'] = {path: '/embed/:id', component: DiscussionPage};
-app.routes['discussion.near'] = {path: '/embed/:id/:near', component: DiscussionPage};
-
+app.routes['discussion'] = { path: '/embed/:id', component: DiscussionPage };
+app.routes['discussion.near'] = { path: '/embed/:id/:near', component: DiscussionPage };
